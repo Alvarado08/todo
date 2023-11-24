@@ -3,6 +3,7 @@
 //TODO 3. Users should be able to create new projects and choose which project their todos go into
 //TODO 4. Separate components. E.g. logic, dom, etc.
 //TODO Review: view all projects (card), view all todos in each project (title,duedate.Use colors for priorities), expand todos to see more details, todos crud
+
 //* using import for module files
 // import { v4 as uuid } from 'uuid';
 // console.log(uuid());
@@ -22,7 +23,7 @@ class Todo {
         this.priority = priority;
         this.todos = [];
     }
-    add = () => {
+    store = () => {
         let todo = {
             id: this.id,
             title: this.title,
@@ -32,10 +33,22 @@ class Todo {
         }
         this.todos.push(todo);
     }
+    delete = (index) => {
+        this.todos.splice(index,1);
+    }
+    edit = (item,title,description,dueDate,priority) => {
+        if(this.todos.includes(item)){
+            this.todos[item].title = title;
+        }
+    }
     getTodos = () => {
         return this.todos;
     }
 }
 let myTodos = new Todo(uuid,'hello','A little description!','NOW!',true);
-myTodos.add();
+let list = new Todo().getTodos();
+myTodos.store();
+myTodos.store();
+console.log(myTodos.getTodos());
+myTodos.delete(0);
 console.log(myTodos.getTodos());
