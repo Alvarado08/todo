@@ -21,34 +21,88 @@ class Todo {
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+    }
+    // store = () => {
+    //     let todo = {
+    //         id: this.id,
+    //         title: this.title,
+    //         description: this.description,
+    //         dueDate: this.dueDate,
+    //         priority: this.priority,
+    //     }
+    //     this.todos.push(todo);
+    // }
+    // delete = (index) => {
+    //     this.todos.splice(index,1);
+    // }
+    // edit = (index,title = '',description = '',dueDate='',priority = '') => {
+    //     if(index >= 0 && index < this.todos.length){
+    //         if(title !== '') this.todos[index].title = title;
+    //         if(description !== '') this.todos[index].description = description;
+    //         if(dueDate !== '') this.todos[index].dueDate = dueDate;
+    //         if(priority !== '') this.todos[index].priority = priority;
+    //     }
+    // }
+    // getTodos = () => {
+    //     return this.todos;
+    // }
+}
+
+class Project {
+    constructor(title){
+        this.title = title;
         this.todos = [];
     }
-    store = () => {
-        let todo = {
-            id: this.id,
-            title: this.title,
-            description: this.description,
-            dueDate: this.dueDate,
-            priority: this.priority,
-        }
+    store = (todo) => {
         this.todos.push(todo);
     }
     delete = (index) => {
         this.todos.splice(index,1);
     }
-    edit = (item,title,description,dueDate,priority) => {
-        if(this.todos.includes(item)){
-            this.todos[item].title = title;
+    edit = (index,title = '',description = '',dueDate='',priority = '') => {
+        if(index >= 0 && index < this.todos.length){
+            const todoToUpdate = this.todos[index];
+            if(title !== '') this.todos[todoToUpdate].title = title;
+            if(description !== '') this.todos[todoToUpdate].description = description;
+            if(dueDate !== '') this.todos[todoToUpdate].dueDate = dueDate;
+            if(priority !== '') this.todos[todoToUpdate].priority = priority;
+        }else{
+            console.log('Todo not found!');
         }
     }
     getTodos = () => {
-        return this.todos;
+        console.log(this.todos);
     }
 }
-let myTodos = new Todo(uuid,'hello','A little description!','NOW!',true);
-let list = new Todo().getTodos();
-myTodos.store();
-myTodos.store();
-console.log(myTodos.getTodos());
-myTodos.delete(0);
-console.log(myTodos.getTodos());
+
+class ProjectManager {
+    constructor(){
+        this.projects = [];
+    }
+    store = (project) => {
+        this.projects.push(project);
+    }
+    delete = (index) => {
+        this.projects.splice(index,1);
+    }
+    getProjects = () => {
+        console.log(this.projects);
+    }
+}
+
+let myProjects = new ProjectManager();
+
+let project1 = new Project('CRM');
+let project2 = new Project('SPA');
+
+let todo1 = new Todo(uuid,'My Awesome Todo','This is a desc!','2015',true);
+let todo2 = new Todo(uuid,'My Cool Todo','This is a desc x2!','2019',false);
+
+myProjects.store(project1);
+myProjects.store(project2);
+project1.store(todo1);
+project2.store(todo2);
+
+myProjects.getProjects();
+project1.getTodos();
+project2.getTodos();
