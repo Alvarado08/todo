@@ -74,27 +74,28 @@ class Project {
     }
     getTodos = () => {
         const todosContainer = document.getElementById(`todos-container-${this.title}`);
-        const addTodoBtn = document.createElement('button');
-        addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
-        addTodoBtn.innerHTML = `
-            <span>Add task</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" />
-            </svg>
-        `
+        // const addTodoBtn = document.createElement('button');
+        // addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
+        // addTodoBtn.innerHTML = `
+        //     <span>Add task</span>
+        //     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" />
+        //     </svg>
+        // `
         const dialog = document.createElement('dialog');
         this.todos.forEach(todo => {
-            const todoCard = document.createElement('article');
-            todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between`;
-            todoCard.innerHTML = `
-                <h5>${todo.title}</h5>
-                <div class="flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-red-500" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                </svg>
-                </div>
-            `
-            todosContainer.appendChild(todoCard);
+            todoCard(todo,todosContainer);
+            // const todoCard = document.createElement('article');
+            // todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between`;
+            // todoCard.innerHTML = `
+            //     <h5>${todo.title}</h5>
+            //     <div class="flex items-center gap-1">
+            //     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+            //     </svg>
+            //     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-red-500" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+            //     </svg>
+            //     </div>
+            // `
+            // todosContainer.appendChild(todoCard);
         })
         todosContainer.appendChild(addTodoBtn);
         addTodoBtn.addEventListener("click",() => {
@@ -146,19 +147,56 @@ class ProjectManager {
     }
     getProjects = () => {
         this.projects.forEach(project => {
-            const projectCard = document.createElement('div');
-            let completed = project.todos.filter(item => item.status);
-            projectCard.className = 'min-h-fit bg-white rounded shadow p-5';
-            projectCard.innerHTML = `
+            projectCard(project);
+            // const projectCard = document.createElement('div');
+            // let completed = project.todos.filter(item => item.status);
+            // projectCard.className = 'min-h-fit bg-white rounded shadow p-5';
+            // projectCard.innerHTML = `
+            //     <h1 class="font-bold text-lg">${project.title}</h1>
+            //     <h3><span class="font-semibold">Todos:</span> ${project.todos.length}</h3>
+            //     <h3><span class="font-semibold">Completed:</span> ${completed.length}</h3>
+            //     <div id="todos-container-${project.title}" class="pt-3 space-y-3"></div>
+            // `
+            // projectManagerContainer.appendChild(projectCard);
+        })
+        console.log(this.projects);
+    }
+}
+
+function projectCard(project) {
+    const projectCard = document.createElement('div');
+    let completed = project.todos.filter(item => item.status);
+    projectCard.className = 'min-h-fit bg-white rounded shadow p-5';
+    projectCard.innerHTML = `
                 <h1 class="font-bold text-lg">${project.title}</h1>
                 <h3><span class="font-semibold">Todos:</span> ${project.todos.length}</h3>
                 <h3><span class="font-semibold">Completed:</span> ${completed.length}</h3>
                 <div id="todos-container-${project.title}" class="pt-3 space-y-3"></div>
             `
-            projectManagerContainer.appendChild(projectCard);
-        })
-        console.log(this.projects);
-    }
+    projectManagerContainer.appendChild(projectCard);
+}
+
+function todoCard(todo,todosContainer) {
+    todosContainer = document.getElementById(`todos-container-${this.title}`);
+    const addTodoBtn = document.createElement('button');
+    addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
+    addTodoBtn.innerHTML = `
+            <span>Add task</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" />
+            </svg>
+        `
+    const todoCard = document.createElement('article');
+    todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between`;
+    todoCard.innerHTML = `
+                <h5>${todo.title}</h5>
+                <div class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-red-500" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                </svg>
+                </div>
+            `
+    todosContainer.appendChild(todoCard);
 }
 
 let myProjects = new ProjectManager();
