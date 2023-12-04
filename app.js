@@ -70,7 +70,7 @@ class ProjectManager {
         this.projects.splice(index,1);
     }
     getProjects = () => {
-        while (projectManagerContainer.firstChild) {
+        if (projectManagerContainer.firstChild) {
             projectManagerContainer.firstChild.remove();
         }
         this.projects.forEach(project => {
@@ -127,30 +127,10 @@ function projectCard(project) {
             `
     projectManagerContainer.appendChild(projectCard);
     const todosContainer = document.getElementById(`todos-container-${project.title}`);
-    addTodoBtn(project.title,todosContainer);
+    todoModal(project.title,todosContainer,project);
 }
 
-function todoCard(todo,title) {
-    const todosContainer = document.getElementById(`todos-container-${title}`);
-    const todoCard = document.createElement('article');
-    todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between duration-300`;
-    todoCard.innerHTML = `
-                <h5 class="hover:cursor-pointer">${todo.title}</h5>
-                <div class="flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-red-500" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                </svg>
-                </div>
-            `
-    todosContainer.appendChild(todoCard);
-    todoCard.addEventListener('click', () => {
-        todo.status = !todo.status;
-        alert(`${todo.status}`)
-    })
-}
-
-function addTodoBtn(title,container){
+function todoModal(title,container,project){
     //const todosContainer = document.getElementById(`todos-container-${projectTitle}`);
     const addTodoBtn = document.createElement('button');
     addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
@@ -184,23 +164,47 @@ function addTodoBtn(title,container){
             </form>
         `;
     container.appendChild(addTodoBtn);
+    let currProject = myProjects.projects.find(item => item.title === title);
     addTodoBtn.addEventListener("click", () => {
         projectManagerContainer.appendChild(dialog);
         const closeBtn = document.getElementById('close');
         dialog.showModal();
+        console.log(currProject);
         closeBtn.addEventListener('click', () => {
             dialog.close();
             projectManagerContainer.removeChild(dialog);
         })
         const titleInput = document.getElementById('title');
+        const descInput = document.getElementById('description');
+        const dateInput = document.getElementById('date');
         const todoForm = document.getElementById('new-todo-form');
         todoForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            //createProject(titleInput);
             dialog.close();
+            createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
             projectManagerContainer.removeChild(dialog);
         })
         // alert(`I'm from project ${this.title}`);
+    })
+}
+
+function todoCard(todo,title) {
+    const todosContainer = document.getElementById(`todos-container-${title}`);
+    const todoCard = document.createElement('article');
+    todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between duration-300`;
+    todoCard.innerHTML = `
+                <h5 class="hover:cursor-pointer">${todo.title}</h5>
+                <div class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-red-500" width="22" height="22" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                </svg>
+                </div>
+            `
+    todosContainer.appendChild(todoCard);
+    todoCard.addEventListener('click', () => {
+        todo.status = !todo.status;
+        alert(`${todo.status}`)
     })
 }
 
@@ -208,8 +212,8 @@ function createProject(title){
     myProjects.store(new Project(title.value));
 }
 
-function createTodo(){
-
+function createTodo(project,title,desc,dueDate){
+    project.store(new Todo(uuid,title,desc,dueDate,false));
 }
 
 newProjectBtn.addEventListener('click',projectModal);
