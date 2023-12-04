@@ -34,6 +34,7 @@ class Project {
     }
     store = (todo) => {
         this.todos.push(todo);
+        this.getTodos();
     }
     delete = (index) => {
         this.todos.splice(index,1);
@@ -51,10 +52,10 @@ class Project {
     }
     getTodos = () => {
         this.todos.forEach(todo => {
-            todoCard(todo,this.title);
+            todoCard(todo);
         })
-        addTodoBtn(this.title);
-        // console.log(this.todos);
+        //addTodoBtn(this.title);
+        console.log(this.todos);
     }
 }
 
@@ -127,10 +128,10 @@ function projectCard(project) {
             `
     projectManagerContainer.appendChild(projectCard);
     const todosContainer = document.getElementById(`todos-container-${project.title}`);
-    todoModal(project.title,todosContainer,project);
+    todoModal(project.title,todosContainer);
 }
 
-function todoModal(title,container,project){
+function todoModal(title,container){
     //const todosContainer = document.getElementById(`todos-container-${projectTitle}`);
     const addTodoBtn = document.createElement('button');
     addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
@@ -167,29 +168,30 @@ function todoModal(title,container,project){
     let currProject = myProjects.projects.find(item => item.title === title);
     addTodoBtn.addEventListener("click", () => {
         projectManagerContainer.appendChild(dialog);
-        const closeBtn = document.getElementById('close');
         dialog.showModal();
+        const titleInput = document.getElementById('title');
+        const descInput = document.getElementById('description');
+        const dateInput = document.getElementById('date');
+        const todoForm = document.getElementById('new-todo-form');
+        const closeBtn = document.getElementById('close');
         console.log(currProject);
         closeBtn.addEventListener('click', () => {
             dialog.close();
             projectManagerContainer.removeChild(dialog);
         })
-        const titleInput = document.getElementById('title');
-        const descInput = document.getElementById('description');
-        const dateInput = document.getElementById('date');
-        const todoForm = document.getElementById('new-todo-form');
         todoForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            dialog.close();
             createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
+            titleInput.value = '', descInput.value = '', dateInput.value = '';
+            dialog.close();
             projectManagerContainer.removeChild(dialog);
         })
         // alert(`I'm from project ${this.title}`);
     })
 }
 
-function todoCard(todo,title) {
-    const todosContainer = document.getElementById(`todos-container-${title}`);
+function todoCard(todo) {
+    //const todosContainer = document.getElementById(`todos-container-${title}`);
     const todoCard = document.createElement('article');
     todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between duration-300`;
     todoCard.innerHTML = `
@@ -201,7 +203,7 @@ function todoCard(todo,title) {
                 </svg>
                 </div>
             `
-    todosContainer.appendChild(todoCard);
+    //container.appendChild(todoCard);
     todoCard.addEventListener('click', () => {
         todo.status = !todo.status;
         alert(`${todo.status}`)
