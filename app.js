@@ -52,9 +52,8 @@ class Project {
     }
     getTodos = () => {
         this.todos.forEach(todo => {
-            todoCard(todo);
+            todoCard(todo,this.title);
         })
-        //addTodoBtn(this.title);
         console.log(this.todos);
     }
 }
@@ -109,10 +108,15 @@ function projectModal(){
     const titleInput = document.getElementById('title');
     const projectForm = document.getElementById('new-project-form');
     projectForm.addEventListener('submit', (e)=>{
-        e.preventDefault();
-        dialog.close();
-        projectManagerContainer.removeChild(dialog);
-        createProject(titleInput);
+        if(titleInput.value.trim() === ''){
+            alert('Please fill out all inputs!');
+            e.preventDefault();
+        }else{
+            e.preventDefault();
+            dialog.close();
+            projectManagerContainer.removeChild(dialog);
+            createProject(titleInput);
+        }
     })
 }
 
@@ -169,29 +173,32 @@ function todoModal(title,container){
     addTodoBtn.addEventListener("click", () => {
         projectManagerContainer.appendChild(dialog);
         dialog.showModal();
-        const titleInput = document.getElementById('title');
-        const descInput = document.getElementById('description');
-        const dateInput = document.getElementById('date');
-        const todoForm = document.getElementById('new-todo-form');
         const closeBtn = document.getElementById('close');
         console.log(currProject);
         closeBtn.addEventListener('click', () => {
             dialog.close();
             projectManagerContainer.removeChild(dialog);
         })
+        const titleInput = document.getElementById('title');
+        const descInput = document.getElementById('description');
+        const dateInput = document.getElementById('date');
+        const todoForm = document.getElementById('new-todo-form');
         todoForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
-            titleInput.value = '', descInput.value = '', dateInput.value = '';
-            dialog.close();
-            projectManagerContainer.removeChild(dialog);
+            if(titleInput.value.trim() === '' || descInput.value.trim() === '' || dateInput.value.trim() === ''){
+                alert('Please fill out all inputs!');
+                e.preventDefault();    
+            }else{
+                e.preventDefault();
+                dialog.close();
+                projectManagerContainer.removeChild(dialog);
+                createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
+            }
         })
-        // alert(`I'm from project ${this.title}`);
     })
 }
 
-function todoCard(todo) {
-    //const todosContainer = document.getElementById(`todos-container-${title}`);
+function todoCard(todo,title) {
+    const todosContainer = document.getElementById(`todos-container-${title}`);
     const todoCard = document.createElement('article');
     todoCard.className = `w-full bg-white rounded p-3 shadow ${todo.status ? 'border-green-500' : 'border-red-500'} border-l-2 flex items-center justify-between duration-300`;
     todoCard.innerHTML = `
@@ -203,7 +210,7 @@ function todoCard(todo) {
                 </svg>
                 </div>
             `
-    //container.appendChild(todoCard);
+    todosContainer.appendChild(todoCard);
     todoCard.addEventListener('click', () => {
         todo.status = !todo.status;
         alert(`${todo.status}`)
