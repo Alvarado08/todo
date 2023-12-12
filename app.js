@@ -56,6 +56,9 @@ class Project {
         })
         console.log(this.todos);
     }
+    countTodos = () => {
+        console.log(this.todos.length);
+    }
 }
 
 class ProjectManager {
@@ -120,23 +123,8 @@ function projectModal(){
     })
 }
 
-function projectCard(project) {
-    const projectCard = document.createElement('div');
-    let completed = project.todos.filter(item => item.status);
-    projectCard.className = 'min-h-fit bg-white rounded shadow p-5';
-    projectCard.innerHTML = `
-                <h1 class="font-bold text-lg">${project.title}</h1>
-                <h3><span class="font-semibold">Todos:</span> ${project.todos.length}</h3>
-                <h3 class="${project.todos.length === 0 && 'hidden'}"><span class="font-semibold">Completed:</span> ${completed.length}</h3>
-                <div id="todos-container-${project.title}" class="pt-3 space-y-3"></div>
-            `
-    projectManagerContainer.appendChild(projectCard);
-    const todosContainer = document.getElementById(`todos-container-${project.title}`);
-    todoModal(project.title,todosContainer);
-}
-
-function todoModal(title,container){
-    //const todosContainer = document.getElementById(`todos-container-${projectTitle}`);
+function todoModal(title,container,todoBtnContainer){
+    // const addTodoContainer = document.getElementById('addTodoContainer');
     const addTodoBtn = document.createElement('button');
     addTodoBtn.className = 'w-full bg-gray-200/40 text-black/50 border rounded py-3 px-6 duration-300 hover:text-black/80 flex items-center justify-center gap-1';
     addTodoBtn.innerHTML = `
@@ -168,7 +156,7 @@ function todoModal(title,container){
                 </div>
             </form>
         `;
-    container.appendChild(addTodoBtn);
+    todoBtnContainer.appendChild(addTodoBtn);
     let currProject = myProjects.projects.find(item => item.title === title);
     addTodoBtn.addEventListener("click", () => {
         projectManagerContainer.appendChild(dialog);
@@ -192,9 +180,28 @@ function todoModal(title,container){
                 dialog.close();
                 projectManagerContainer.removeChild(dialog);
                 createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
+                if(container.firstChild)container.firstChild.remove();
+                currProject.countTodos();
             }
         })
     })
+}
+
+function projectCard(project) {
+    const projectCard = document.createElement('div');
+    let completed = project.todos.filter(item => item.status);
+    projectCard.className = 'min-h-fit bg-white rounded shadow p-5';
+    projectCard.innerHTML = `
+                <h1 class="font-bold text-lg">${project.title}</h1>
+                <h3><span class="font-semibold">Todos:</span> ${project.todos.length}</h3>
+                <h3 class="${project.todos.length === 0 && 'hidden'}"><span class="font-semibold">Completed:</span> ${completed.length}</h3>
+                <div id="addTodoContainer" class="mt-3"></div>
+                <div id="todos-container-${project.title}" class="pt-3 space-y-3"></div>
+            `
+    projectManagerContainer.appendChild(projectCard);
+    const todosContainer = document.getElementById(`todos-container-${project.title}`);
+    const addTodoContainer = document.getElementById('addTodoContainer');
+    todoModal(project.title,todosContainer,addTodoContainer);
 }
 
 function todoCard(todo,title) {
