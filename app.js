@@ -7,7 +7,7 @@
 //* using import for module files
 // import { v4 as uuid } from 'uuid';
 // console.log(uuid());
-//* browser enviornment built in uuid without packages
+//* browser environment built in API uuid(crypto) without packages
 let uuid = crypto.randomUUID(); 
 // console.log(uuid);
 //* using require for non modules files
@@ -17,6 +17,7 @@ let uuid = crypto.randomUUID();
 const projectManagerContainer = document.getElementById('manager-container');
 const newProjectBtn = document.getElementById('new-project-btn');
 
+// Objects
 class Todo {
     constructor(id,title,description,dueDate,status){
         this.id = id;
@@ -82,9 +83,12 @@ class ProjectManager {
         console.log(this.projects);
     }
 }
+
+// Project Manager Instantiation
 let myProjects = new ProjectManager();
 
 // DOM Single Responsibility Functions
+// Modals
 function projectModal(){
     const dialog = document.createElement('dialog');
     dialog.className = 'p-5 rounded bg-white w-full max-w-sm'
@@ -180,13 +184,14 @@ function todoModal(title,container,todoBtnContainer){
                 dialog.close();
                 projectManagerContainer.removeChild(dialog);
                 createTodo(currProject,titleInput.value,descInput.value,dateInput.value);
-                if(container.firstChild)container.firstChild.remove();
+                //if(container.firstChild)container.firstChild.remove();
                 currProject.countTodos();
             }
         })
     })
 }
 
+// Cards
 function projectCard(project) {
     const projectCard = document.createElement('div');
     let completed = project.todos.filter(item => item.status);
@@ -224,6 +229,7 @@ function todoCard(todo,title) {
     })
 }
 
+// Object Instances
 function createProject(title){
     myProjects.store(new Project(title.value));
 }
@@ -232,23 +238,27 @@ function createTodo(project,title,desc,dueDate){
     project.store(new Todo(uuid,title,desc,dueDate,false));
 }
 
+// Event Listeners
 newProjectBtn.addEventListener('click',projectModal);
 
-// let myProjects = new ProjectManager();
+/*
+Console CRUD
+let myProjects = new ProjectManager();
 
-// let project1 = new Project('CRM');
-// let project2 = new Project('SPA');
+let project1 = new Project('CRM');
+let project2 = new Project('SPA');
 
-// let todo1 = new Todo(uuid,'My Awesome Todo','This is a desc!','2015',true);
-// let todo2 = new Todo(uuid,'My Cool Todo','This is a desc x2!','2019',true);
-// let todo3 = new Todo(uuid,'My Cool Todo x 2','This is a desc x3!','2019',false);
+let todo1 = new Todo(uuid,'My Awesome Todo','This is a desc!','2015',true);
+let todo2 = new Todo(uuid,'My Cool Todo','This is a desc x2!','2019',true);
+let todo3 = new Todo(uuid,'My Cool Todo x 2','This is a desc x3!','2019',false);
 
-// myProjects.store(project1);
-// myProjects.store(project2);
-// project1.store(todo1);
-// project2.store(todo2);
-// project2.store(todo3);
+myProjects.store(project1);
+myProjects.store(project2);
+project1.store(todo1);
+project2.store(todo2);
+project2.store(todo3);
 
-// myProjects.getProjects();
-// project1.getTodos();
-// project2.getTodos();
+myProjects.getProjects();
+project1.getTodos();
+project2.getTodos();
+*/
